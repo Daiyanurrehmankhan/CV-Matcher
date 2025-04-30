@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CV/JD Matching</title>
+    <style>
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+      }
+      .upload-form {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+      .results {
+        text-align: left;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 20px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+      .results h2 {
+        color: #333;
+        margin-bottom: 10px;
+      }
+      .results ol {
+        list-style-position: inside;
+        padding-left: 0;
+      }
+      .results li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .results li:last-child {
+        border-bottom: none;
+      }
+      .error {
+        color: red;
+        margin-bottom: 10px;
+        border: 1px solid red;
+        padding: 10px;
+        background-color: #ffe0e0;
+      }
+      input[type="file"] {
+        margin-bottom: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #367c39;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CV/JD Matching</h1>
+        <form class="upload-form" method="POST" enctype="multipart/form-data">
+            <label for="jd_file">Job Description:</label>
+            <input type="file" name="jd_file" id="jd_file" accept=".txt" required><br>
+            <label for="cv_files">CVs (select multiple):</label>
+            <input type="file" name="cv_files" id="cv_files" multiple accept=".txt" required><br>
+            <button type="submit">Match CVs</button>
+        </form>
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        {% if results %}
+            <div class="results">
+                <h2>Matching Results for Job Description: {{ jd_filename }}</h2>
+                <ol>
+                    {% for cv_file, similarity_score in results %}
+                        <li>CV: {{ cv_file }}, Similarity: {{ similarity_score:.4f }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
